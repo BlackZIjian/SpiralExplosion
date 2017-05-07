@@ -68,6 +68,9 @@
     <Compile Include="Assets\CutTerrain\StaticObject.cs" />
     <Compile Include="Assets\CutTerrain\Test.cs" />
     <Compile Include="Assets\InputManager\InputController.cs" />
+    <Compile Include="Assets\Notification\NotificationCenter.cs" />
+    <Compile Include="Assets\Notification\TestNotication.cs" />
+    <Compile Include="Assets\Notification\TestReceiver.cs" />
     <Compile Include="Assets\StateMachine\CharacterStateMachine.cs" />
     <Compile Include="Assets\StateMachine\MeleeKnightStateMachine.cs" />
     <Compile Include="Assets\StateMachine\StateMachineEnum.cs" />
