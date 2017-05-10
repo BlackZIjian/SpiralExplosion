@@ -1,4 +1,4 @@
 sceneSetups:
-- path: Assets/SuperCharacter/CharacterControl.unity
+- path: Assets/FindPath/test.unity
   isLoaded: 1
   isActive: 1

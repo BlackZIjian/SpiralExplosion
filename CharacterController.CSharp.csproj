@@ -67,6 +67,7 @@
     <Compile Include="Assets\CutTerrain\SetFoot.cs" />
     <Compile Include="Assets\CutTerrain\StaticObject.cs" />
     <Compile Include="Assets\CutTerrain\Test.cs" />
+    <Compile Include="Assets\FindPath\FindPath.cs" />
     <Compile Include="Assets\InputManager\InputController.cs" />
     <Compile Include="Assets\Notification\NotificationCenter.cs" />
     <Compile Include="Assets\Notification\TestNotication.cs" />
@@ -107,6 +108,7 @@
     <Compile Include="Assets\SuperCharacter\SuperCharacterController\SuperCharacterController\Core\SuperStateMachine.cs" />
     <Compile Include="Assets\SuperCharacter\SuperCharacterController\SuperCharacterController\DebugDraw.cs" />
     <Compile Include="Assets\SuperCharacter\SuperCharacterController\SuperCharacterController\Math3d.cs" />
+    <Compile Include="Assets\YuanZhuiCast\SightCone.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\SuperCharacter\SuperCharacterController\SuperCharacterController\README.txt" />

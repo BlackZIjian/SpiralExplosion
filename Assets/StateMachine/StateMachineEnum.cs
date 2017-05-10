@@ -8,7 +8,8 @@ public enum Transition
     CharacterWalkToIdle,
     CharacterLand,
     CharacterJump,
-    CharacterFall
+    CharacterFall,
+    MeleeKnightSeeSomeOne
 }
 
 public enum StateID
@@ -17,5 +18,8 @@ public enum StateID
     CharacterIdle,
     CharacterWalk,
     CharacterJump,
-    CharacterFall
+    CharacterFall,
+    MeleeKnightIdle,
+    MeleeKnightSeeSomeOne,
+    MeleeKnightState
 }
