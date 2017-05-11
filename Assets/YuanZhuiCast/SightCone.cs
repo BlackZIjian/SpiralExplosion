@@ -46,36 +46,29 @@ public class SightCone : MonoBehaviour
         
     }
 
-    void OnDrawGizmos()
-    {
-        foreach (Sphere s in spheres)
-        {
-            Gizmos.DrawSphere(s.center, s.radius);
-        }
-    }
-    public void RonateTo(float xAngle, float delta)
-    {
-        isRonating = true;
-        remainAngle = xAngle;
-        ronateDelta = delta;
-        if (remainAngle < 0)
-        {
-            delta = -delta;
-        }
-    }
-    public void RonateTo(Vector3 targetDirection, float delta)
-    {
-        isRonating = true;
-        Vector3 plane = Math3d.ProjectVectorOnPlane(characterUp, targetDirection);
-        Quaternion qua = Quaternion.FromToRotation(direction, plane);
-        Vector3 v;
-        qua.ToAngleAxis(out remainAngle, out v);
-        ronateDelta = delta;
-        if (remainAngle < 0)
-        {
-            delta = -delta;
-        }
-    }
+    //public void RonateTo(float xAngle, float delta)
+    //{
+    //    isRonating = true;
+    //    remainAngle = xAngle;
+    //    ronateDelta = delta;
+    //    if (remainAngle < 0)
+    //    {
+    //        delta = -delta;
+    //    }
+    //}
+    //public void RonateTo(Vector3 targetDirection, float delta)
+    //{
+    //    isRonating = true;
+    //    Vector3 plane = Math3d.ProjectVectorOnPlane(characterUp, targetDirection);
+    //    Quaternion qua = Quaternion.FromToRotation(direction, plane);
+    //    Vector3 v;
+    //    qua.ToAngleAxis(out remainAngle, out v);
+    //    ronateDelta = delta;
+    //    if (remainAngle < 0)
+    //    {
+    //        delta = -delta;
+    //    }
+    //}
     public Collider[] GetCastColliders(int layermask)
     {
         return GetConeCastColliders(startPoint, direction, nearDis, farDis, angle, layermask);
@@ -144,21 +137,6 @@ public class SightCone : MonoBehaviour
 
     public void Update()
     {
-        if (isRonating && remainAngle > 0)
-        {
-            if (remainAngle > ronateDelta)
-            {
-                Quaternion qua = Quaternion.AngleAxis(ronateDelta, characterUp);
-                direction = qua * direction;
-                remainAngle -= ronateDelta;
-            }
-            else
-            {
-                Quaternion qua = Quaternion.AngleAxis(remainAngle, characterUp);
-                direction = qua * direction;
-                remainAngle = 0;
-                isRonating = false;
-            }
-        }
+        
     }
 }

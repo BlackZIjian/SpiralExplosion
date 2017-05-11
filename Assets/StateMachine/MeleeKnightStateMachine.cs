@@ -2,12 +2,20 @@
 using System.Collections;
 using System;
 
+
+public struct AIInput
+{
+    public Vector2 AIInputV;
+    public bool AIInputJump;
+}
 public class MeleeKnightStateMachine : FSMSystem {
     public MeleeAISubStateMachine ai;
     public MeleeMoveSubStateMachine move;
+    public AIInput ai_input;
     public MeleeKnightStateMachine(SuperCharacterController controller)
     {
-        ai = new MeleeAISubStateMachine(controller);
+        ai_input = new AIInput();
+        ai = new MeleeAISubStateMachine(controller,this);
         move = new MeleeMoveSubStateMachine(controller);
         AddState(new MeleeKnightState(this));
     }
@@ -35,9 +43,11 @@ class MeleeKnightState : FSMState
 
 public class MeleeAISubStateMachine : FSMSystem
 {
-    public MeleeAISubStateMachine(SuperCharacterController controller)
+    public MeleeKnightStateMachine fatherFSM;
+    public MeleeAISubStateMachine(SuperCharacterController controller, MeleeKnightStateMachine fatherFSM)
     {
         AddState(new MeleeKnightIdleState(controller, this));
+        this.fatherFSM = fatherFSM;
     }
 }
 
@@ -54,6 +64,10 @@ public class MeleeMoveSubStateMachine : FSMSystem
 public class MeleeKnightIdleState : FSMState
 {
     public SuperCharacterController controller;
+    float ronateSpeed;
+    SightCone sight;
+    float remainTime = 0;
+    
     public MeleeKnightIdleState(SuperCharacterController c, FSMSystem f)
     {
         fsm = f;
@@ -68,17 +82,26 @@ public class MeleeKnightIdleState : FSMState
 
     public override void Act()
     {
-        controller.MoveHorizontal(new Vector2(0, 1), 0, 10);
-        MeleeAISubStateMachine cfsm = (MeleeAISubStateMachine)fsm;
-        //Animator ani = cfsm.CharacterAni;
-        //ani.SetFloat("vx", 0);
-        //ani.SetFloat("vy", controller.GetHorizontal().magnitude / cfsm.maxSpeed);
-        controller.MoveVertical(30, 0);
+        MeleeAISubStateMachine aiFSM = (MeleeAISubStateMachine)fsm;
+        if(remainTime <= 0)
+        {
+            aiFSM.fatherFSM.ai_input.AIInputV = new Vector2(0, 0);
+            int r = UnityEngine.Random.Range(0, 100);
+            if(r > 70)
+            {
+                remainTime = 1;
+                aiFSM.fatherFSM.ai_input.AIInputV = new Vector2(UnityEngine.Random.Range(-1, 1), UnityEngine.Random.Range(-1, 1));
+            }
+        }
+        else
+        {
+            remainTime -= controller.deltaTime;
+        }
+        
     }
     public override void DoBeforeEntering()
     {
-        controller.EnableClamping();
-        controller.EnableSlopeLimit();
+        sight = controller.gameObject.GetComponent<SightCone>();
     }
 }
 
