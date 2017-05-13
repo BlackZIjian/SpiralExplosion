@@ -6,7 +6,8 @@ public class CharacterStateMachine : FSMSystem {
 
     public Animator CharacterAni;
     public float maxSpeed;
-    public CharacterStateMachine(SuperCharacterController controller)
+    public SuperCharacterController controller;
+    public void Start()
     {
         this.CharacterAni = controller.ani;
         this.maxSpeed = controller.maxSpeed;

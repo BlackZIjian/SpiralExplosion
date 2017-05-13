@@ -123,20 +123,11 @@ public class SuperCharacterController : MonoBehaviour
     [SerializeField]
     public Vector3 lookDirection { get; private set; }
 
-    private FSMSystem fsm;
-    public string StateMachineName;
+    public FSMSystem fsm;
     public float maxSpeed;
 
     void Awake()
     {
-        if (StateMachineName == "Character")
-        {
-            fsm = new CharacterStateMachine(this);
-        }
-        else if(StateMachineName == "MeleeKnight")
-        {
-            fsm = new MeleeKnightStateMachine(this);
-        }
         collisionData = new List<SuperCollision>();
         triggerData = new List<Collider>();
 

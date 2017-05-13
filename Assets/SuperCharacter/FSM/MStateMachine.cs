@@ -6,7 +6,7 @@ using System.Collections;
 
 
 
-public abstract class FSMState
+public abstract class FSMState 
 {
     protected Dictionary<Transition, StateID> map = new Dictionary<Transition, StateID>();
     protected StateID stateID;
@@ -106,7 +106,7 @@ public abstract class FSMState
 }
 
 
-public abstract class FSMSystem
+public abstract class FSMSystem : MonoBehaviour
 {
     private List<FSMState> states;
     // The only way one can change the state of the FSM is by performing a transition  
