@@ -63,6 +63,10 @@ public class MeleeAISubStateMachine : FSMSystem
     }
     public void Update()
     {
+        if(time.deltaTime == 0)
+        {
+            return;
+        }
         CurrentState.Reason();
         CurrentState.Act();
         if(enableSuperMove)

@@ -9,7 +9,7 @@ using System.Collections.Generic;
 /// Custom character controller, to be used by attaching the component to an object
 /// and writing scripts attached to the same object that recieve the "SuperUpdate" message
 /// </summary>
-public class SuperCharacterController : MonoBehaviour
+public class SuperCharacterController : BaseBehaviour
 {
     [SerializeField]
     Vector3 debugMove = Vector3.zero;
@@ -178,36 +178,38 @@ public class SuperCharacterController : MonoBehaviour
     {
         // If we are using a fixed timestep, ensure we run the main update loop
         // a sufficient number of times based on the Time.deltaTime
-        if (manualUpdateOnly)
-            return;
+        //if (manualUpdateOnly)
+        //    return;
 
-        if (!fixedTimeStep)
-        {
-            deltaTime = Time.deltaTime;
+        //if (!fixedTimeStep)
+        //{
+        //    deltaTime = Time.deltaTime;
 
-            SingleUpdate();
-            return;
-        }
-        else
-        {
-            float delta = Time.deltaTime;
+        //    SingleUpdate();
+        //    return;
+        //}
+        //else
+        //{
+        //    float delta = Time.deltaTime;
 
-            while (delta > fixedDeltaTime)
-            {
-                deltaTime = fixedDeltaTime;
+        //    while (delta > fixedDeltaTime)
+        //    {
+        //        deltaTime = fixedDeltaTime;
 
-                SingleUpdate();
+        //        SingleUpdate();
 
-                delta -= fixedDeltaTime;
-            }
+        //        delta -= fixedDeltaTime;
+        //    }
 
-            if (delta > 0f)
-            {
-                deltaTime = delta;
+        //    if (delta > 0f)
+        //    {
+        //        deltaTime = delta;
 
-                SingleUpdate();
-            }
-        }
+        //        SingleUpdate();
+        //    }
+        //}
+        deltaTime = time.deltaTime;
+        SingleUpdate();
     }
 
     private Vector3 moveDirection;
