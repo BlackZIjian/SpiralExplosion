@@ -6,15 +6,33 @@ public class CharacterStateMachine : FSMSystem {
 
     public Animator CharacterAni;
     public float maxSpeed;
+    public float attackSpeed;
     public SuperCharacterController controller;
+    public bool isContinueAttack = false;
     public void Start()
     {
         this.CharacterAni = controller.ani;
         this.maxSpeed = controller.maxSpeed;
+        attackSpeed = controller.attackSpeed;
         AddState(new CharacterIdleState(controller,this));
         AddState(new CharacterWalkState(controller, this));
         AddState(new CharacterJumpState(controller, this));
         AddState(new CharacterFallState(controller, this));
+        AddState(new CharacterAttack1State(controller, this));
+        AddState(new CharacterAttack2State(controller, this));
+        AddState(new CharacterAttack3State(controller, this));
+    }
+
+    public void OnAttackFinished()
+    {
+        if(isContinueAttack)
+        {
+            PerformTransition(Transition.ToNextAttack);
+        }
+        else
+        {
+            PerformTransition(Transition.ToCharacterIdle);
+        }
     }
 }
 
@@ -29,6 +47,7 @@ public class CharacterIdleState : FSMState
         AddTransition(Transition.CharacterIdleToWalk, StateID.CharacterWalk);
         AddTransition(Transition.CharacterJump, StateID.CharacterJump);
         AddTransition(Transition.CharacterFall, StateID.CharacterFall);
+        AddTransition(Transition.ToNextAttack, StateID.CharacterAttack1);
     }
     public override void Reason()
     {
@@ -37,19 +56,24 @@ public class CharacterIdleState : FSMState
         {
             fsm.PerformTransition(Transition.CharacterIdleToWalk);
         }
-        if(Input.GetKeyDown(KeyCode.Space))
+        if(InputController.GetKey<bool>("Jump"))
         {
             fsm.PerformTransition(Transition.CharacterJump);
+        }
+        if(InputController.GetKey<bool>("Attack"))
+        {
+            fsm.PerformTransition(Transition.ToNextAttack);
         }
         if(!controller.MaintainingGround())
         {
             fsm.PerformTransition(Transition.CharacterFall);
         }
+
     }
 
     public override void Act()
     {
-        controller.MoveHorizontal(new Vector2(0, 1), 0, 10);
+        controller.MoveHorizontal(new Vector2(0, 1), 0, 5);
         CharacterStateMachine cfsm= (CharacterStateMachine)fsm;
         Animator ani = cfsm.CharacterAni;
         ani.SetFloat("vx", 0);
@@ -60,6 +84,16 @@ public class CharacterIdleState : FSMState
     {
         controller.EnableClamping();
         controller.EnableSlopeLimit();
+        CharacterStateMachine cfsm = (CharacterStateMachine)fsm;
+        Animator ani = cfsm.CharacterAni;
+        ani.SetBool("isAttackFinished", true);
+        ani.SetBool("startAttack", false);
+    }
+    public override void DoBeforeLeaving()
+    {
+        CharacterStateMachine cfsm = (CharacterStateMachine)fsm;
+        Animator ani = cfsm.CharacterAni;
+        ani.SetBool("isAttackFinished", false);
     }
 }
 
@@ -74,6 +108,7 @@ public class CharacterWalkState : FSMState
         AddTransition(Transition.CharacterWalkToIdle, StateID.CharacterIdle);
         AddTransition(Transition.CharacterJump, StateID.CharacterJump);
         AddTransition(Transition.CharacterFall, StateID.CharacterFall);
+        AddTransition(Transition.ToNextAttack, StateID.CharacterAttack1);
     }
 
     public override void Reason()
@@ -89,6 +124,10 @@ public class CharacterWalkState : FSMState
         if (InputController.GetKey<Vector2>("inputV").magnitude <= 0.1f)
         {
             fsm.PerformTransition(Transition.CharacterWalkToIdle);
+        }
+        if (InputController.GetKey<bool>("Attack"))
+        {
+            fsm.PerformTransition(Transition.ToNextAttack);
         }
     }
 
@@ -126,14 +165,25 @@ public class CharacterWalkState : FSMState
         }
         if (finalAngle <= 5)
             vx = 0;
-        ani.SetFloat("vx", vx);
-        ani.SetFloat("vy", vy);
+        ani.SetFloat("vx", 0);
+        ani.SetFloat("vy", Mathf.Abs(vy));
     }
     public override void DoBeforeEntering()
     {
         controller.EnableClamping();
         controller.EnableSlopeLimit();
+        CharacterStateMachine cfsm = (CharacterStateMachine)fsm;
+        Animator ani = cfsm.CharacterAni;
+        ani.SetBool("isAttackFinished", true);
+        ani.SetBool("startAttack", false);
     }
+    public override void DoBeforeLeaving()
+    {
+        CharacterStateMachine cfsm = (CharacterStateMachine)fsm;
+        Animator ani = cfsm.CharacterAni;
+        ani.SetBool("isAttackFinished", false);
+    }
+
 }
 
 public class CharacterJumpState : FSMState
@@ -200,4 +250,119 @@ public class CharacterFallState : FSMState
         controller.DisableSlopeLimit();
     }
 }
+
+public class CharacterAttack1State : FSMState
+{
+    public SuperCharacterController controller;
+    public CharacterStateMachine cfsm;
+    public CharacterAttack1State(SuperCharacterController c, FSMSystem f)
+    {
+        stateID = StateID.CharacterAttack1;
+        fsm = f;
+        controller = c;
+        AddTransition(Transition.ToCharacterIdle, StateID.CharacterIdle);
+        AddTransition(Transition.ToNextAttack, StateID.CharacterAttack2);
+        cfsm = (CharacterStateMachine)fsm;
+    }
+    public override void Reason()
+    {
+        if(InputController.GetKey<bool>("Attack"))
+        {
+            cfsm.isContinueAttack = true;
+        }
+        
+    }
+
+    public override void Act()
+    {
+        if(controller.GetHorizontal().magnitude > cfsm.attackSpeed)
+        {
+            controller.MoveHorizontal(controller.GetHorizontal(), cfsm.attackSpeed, 5);
+        }
+    }
+    public override void DoBeforeEntering()
+    {
+        cfsm.isContinueAttack = false;
+        cfsm.CharacterAni.SetBool("startAttack", true);
+    }
+    public override void DoBeforeLeaving()
+    {
+    }
+}
+
+public class CharacterAttack2State : FSMState
+{
+    public SuperCharacterController controller;
+    public CharacterStateMachine cfsm;
+    public CharacterAttack2State(SuperCharacterController c, FSMSystem f)
+    {
+        stateID = StateID.CharacterAttack2;
+        fsm = f;
+        controller = c;
+        AddTransition(Transition.ToCharacterIdle, StateID.CharacterIdle);
+        AddTransition(Transition.ToNextAttack, StateID.CharacterAttack3);
+        cfsm = (CharacterStateMachine)fsm;
+    }
+    public override void Reason()
+    {
+        if (InputController.GetKey<bool>("Attack"))
+        {
+            cfsm.isContinueAttack = true;
+        }
+    }
+
+    public override void Act()
+    {
+        if (controller.GetHorizontal().magnitude > cfsm.attackSpeed)
+        {
+            controller.MoveHorizontal(controller.GetHorizontal(), cfsm.attackSpeed, 5);
+        }
+    }
+    public override void DoBeforeEntering()
+    {
+        cfsm.isContinueAttack = false;
+    }
+    public override void DoBeforeLeaving()
+    {
+    }
+}
+
+public class CharacterAttack3State : FSMState
+{
+    public SuperCharacterController controller;
+    public CharacterStateMachine cfsm;
+    public CharacterAttack3State(SuperCharacterController c, FSMSystem f)
+    {
+        stateID = StateID.CharacterAttack3;
+        fsm = f;
+        controller = c;
+        AddTransition(Transition.ToCharacterIdle, StateID.CharacterIdle);
+        AddTransition(Transition.ToNextAttack, StateID.CharacterIdle);
+        cfsm = (CharacterStateMachine)fsm;
+    }
+    public override void Reason()
+    {
+        if (InputController.GetKey<bool>("Attack"))
+        {
+            cfsm.isContinueAttack = true;
+        }
+    }
+
+    public override void Act()
+    {
+        if (controller.GetHorizontal().magnitude > cfsm.attackSpeed)
+        {
+            controller.MoveHorizontal(controller.GetHorizontal(), cfsm.attackSpeed, 5);
+        }
+    }
+    public override void DoBeforeEntering()
+    {
+        cfsm.isContinueAttack = false;
+    }
+    public override void DoBeforeLeaving()
+    {
+    }
+}
+
+
 

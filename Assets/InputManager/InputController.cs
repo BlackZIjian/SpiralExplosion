@@ -61,6 +61,7 @@ public class InputController : MonoBehaviour {
             v2.x = 1;
         }
         keyValue["inputV"] = v2;
+        
     }
 
     public static T GetKey<T>(string keyName)

@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class CameraFollow : MonoBehaviour
+public class CameraFollow : BaseBehaviour
 {
     public float smooth = 1.5f;         // The relative speed at which the camera will catch up.  
     public float xAngle = 0;
@@ -63,7 +63,7 @@ public class CameraFollow : MonoBehaviour
         }
 
         // Lerp the camera's position between it's current position and it's new position.  
-        transform.position = Vector3.Lerp(transform.position, newPos, smooth * Time.deltaTime);
+        transform.position = Vector3.Lerp(transform.position, newPos, smooth * time.deltaTime);
 
         // Make sure the camera is looking at the player.  
         SmoothLookAt();
@@ -98,6 +98,6 @@ public class CameraFollow : MonoBehaviour
 
         transform.rotation = lookAtRotation;
         // Lerp the camera's rotation between it's current rotation and the rotation that looks at the player.  
-        transform.rotation = Quaternion.Lerp(transform.rotation, lookAtRotation, smooth * Time.deltaTime);
+        transform.rotation = Quaternion.Lerp(transform.rotation, lookAtRotation, smooth * time.deltaTime);
     }
 }

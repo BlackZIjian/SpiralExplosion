@@ -9,7 +9,9 @@ public enum Transition
     CharacterLand,
     CharacterJump,
     CharacterFall,
-    MeleeKnightSeeSomeOne
+    MeleeKnightSeeSomeOne,
+    ToCharacterIdle,
+    ToNextAttack
 }
 
 public enum StateID
@@ -21,5 +23,8 @@ public enum StateID
     CharacterFall,
     MeleeKnightIdle,
     MeleeKnightSeeSomeOne,
-    MeleeKnightState
+    MeleeKnightState,
+    CharacterAttack1,
+    CharacterAttack2,
+    CharacterAttack3
 }

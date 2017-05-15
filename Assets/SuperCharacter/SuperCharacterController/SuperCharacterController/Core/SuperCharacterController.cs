@@ -79,7 +79,7 @@ public class SuperCharacterController : BaseBehaviour
 
     [SerializeField]
     public float radius = 0.5f;
-
+    public float attackSpeed;
     public float deltaTime { get; private set; }
     public SuperGround currentGround { get; private set; }
     public CollisionSphere feet { get; private set; }
