@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 
-public class InputController : MonoBehaviour {
+public class InputController : BaseBehaviour {
     //public KeyCode Forward;
     //public KeyCode Back;
     //public KeyCode Left;
@@ -12,6 +12,7 @@ public class InputController : MonoBehaviour {
     //public KeyCode Attack;
     public Dictionary<string, KeyCode> keySetting=new Dictionary<string,KeyCode>();
     private static Dictionary<string, object> keyValue = new Dictionary<string, object>();
+    float attack_time = 0;
 	// Use this for initialization
 	void Start () {
         //Forward = KeyCode.W;
@@ -42,6 +43,7 @@ public class InputController : MonoBehaviour {
                 keyValue[key.Key] = false;
             }
         }
+     
 
         Vector2 v2 = new Vector2(0, 0);
         if(Input.GetKey(keySetting["Forward"]))
@@ -61,6 +63,22 @@ public class InputController : MonoBehaviour {
             v2.x = 1;
         }
         keyValue["inputV"] = v2;
+        keyValue["Attack"] = false;
+        if(Input.GetKey(keySetting["Attack"]))
+        {
+            attack_time += time.deltaTime;
+        }
+        else
+        {
+            if(attack_time < 0.2f && attack_time > 0)
+            {
+                keyValue["Attack"] = true;
+            }
+            attack_time = 0;
+        }
+
+        keyValue["PluckAttack"] = (attack_time > 0.2f);
+        
         
     }
 

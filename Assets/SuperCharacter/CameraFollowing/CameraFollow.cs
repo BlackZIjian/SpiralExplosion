@@ -23,7 +23,7 @@ public class CameraFollow : BaseBehaviour
     }
 
 
-    void FixedUpdate()
+    void LateUpdate()
     {
         //xAngle += 0.1f;
         SuperCharacterController sc = player.GetComponent<SuperCharacterController>();

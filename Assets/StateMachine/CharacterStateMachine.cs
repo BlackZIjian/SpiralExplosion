@@ -9,6 +9,9 @@ public class CharacterStateMachine : FSMSystem {
     public float attackSpeed;
     public SuperCharacterController controller;
     public bool isContinueAttack = false;
+    public float plucking = 0;
+    public float pluckSpeed = 0;
+    public Collider WeaponCollider;
     public void Start()
     {
         this.CharacterAni = controller.ani;
@@ -21,6 +24,8 @@ public class CharacterStateMachine : FSMSystem {
         AddState(new CharacterAttack1State(controller, this));
         AddState(new CharacterAttack2State(controller, this));
         AddState(new CharacterAttack3State(controller, this));
+        AddState(new CharacterPluckState(controller, this));
+        AddState(new CharacterWaveSwordState(controller, this));
     }
 
     public void OnAttackFinished()
@@ -32,6 +37,20 @@ public class CharacterStateMachine : FSMSystem {
         else
         {
             PerformTransition(Transition.ToCharacterIdle);
+        }
+    }
+
+    public void OnWaveFinished()
+    {
+        PerformTransition(Transition.PullToIdle);
+    }
+    public void pausePull()
+    {
+        
+        AnimatorStateInfo animatorInfo = CharacterAni.GetCurrentAnimatorStateInfo(0);
+        if (animatorInfo.IsName("PullSword") && CurrentStateID == StateID.CharacterPluck)//注意这里指的不是动画的名字而是动画状态的名字
+        {
+            CharacterAni.speed = 0;
         }
     }
 }
@@ -48,6 +67,7 @@ public class CharacterIdleState : FSMState
         AddTransition(Transition.CharacterJump, StateID.CharacterJump);
         AddTransition(Transition.CharacterFall, StateID.CharacterFall);
         AddTransition(Transition.ToNextAttack, StateID.CharacterAttack1);
+        AddTransition(Transition.ToPlucking, StateID.CharacterPluck);
     }
     public override void Reason()
     {
@@ -64,7 +84,11 @@ public class CharacterIdleState : FSMState
         {
             fsm.PerformTransition(Transition.ToNextAttack);
         }
-        if(!controller.MaintainingGround())
+        if(InputController.GetKey<bool>("PluckAttack"))
+        {
+            fsm.PerformTransition(Transition.ToPlucking);
+        }
+        if (!controller.MaintainingGround())
         {
             fsm.PerformTransition(Transition.CharacterFall);
         }
@@ -361,6 +385,77 @@ public class CharacterAttack3State : FSMState
     }
     public override void DoBeforeLeaving()
     {
+    }
+}
+
+public class CharacterPluckState : FSMState
+{
+    public SuperCharacterController controller;
+    public CharacterStateMachine cfsm;
+    public CharacterPluckState(SuperCharacterController c, FSMSystem f)
+    {
+        stateID = StateID.CharacterPluck;
+        fsm = f;
+        controller = c;
+        cfsm = (CharacterStateMachine)fsm;
+        AddTransition(Transition.ToPulling, StateID.CharacterWaveSword);
+    }
+    public override void Reason()
+    {
+        //转移到挥剑状态
+        if (!InputController.GetKey<bool>("PluckAttack"))
+        {
+            cfsm.PerformTransition(Transition.ToPulling);
+        }
+    }
+
+    public override void Act()
+    {
+        cfsm.plucking += controller.time.deltaTime * cfsm.pluckSpeed;
+    }
+    public override void DoBeforeEntering()
+    {
+        cfsm.plucking = 0;
+        cfsm.CharacterAni.SetBool("startPluck", true);
+    }
+    public override void DoBeforeLeaving()
+    {
+        cfsm.CharacterAni.SetBool("startPluck", false);
+    }
+}
+
+public class CharacterWaveSwordState : FSMState
+{
+    public SuperCharacterController controller;
+    public CharacterStateMachine cfsm;
+    public CharacterWaveSwordState(SuperCharacterController c, FSMSystem f)
+    {
+        stateID = StateID.CharacterWaveSword;
+        fsm = f;
+        controller = c;
+        cfsm = (CharacterStateMachine)fsm;
+        AddTransition(Transition.PullToIdle, StateID.CharacterIdle);
+    }
+    public override void Reason()
+    {
+
+    }
+
+    public override void Act()
+    {
+        //进行碰撞检测，如果碰到敌人的武器，则时间减缓，破碎
+    }
+    public override void DoBeforeEntering()
+    {
+        AnimatorStateInfo animatorInfo = cfsm.CharacterAni.GetCurrentAnimatorStateInfo(0);
+        if (animatorInfo.IsName("PullSword") || animatorInfo.IsName("TakeSword"))//注意这里指的不是动画的名字而是动画状态的名字
+        {
+            cfsm.CharacterAni.speed = 1;
+        }
+    }
+    public override void DoBeforeLeaving()
+    {
+        cfsm.plucking = 0;
     }
 }
 

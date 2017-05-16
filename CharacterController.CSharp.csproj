@@ -154,6 +154,7 @@
     <Compile Include="Assets\CutTerrain\StaticObject.cs" />
     <Compile Include="Assets\CutTerrain\Test.cs" />
     <Compile Include="Assets\FindPath\FindPath.cs" />
+    <Compile Include="Assets\FindPath\NavigationPath.cs" />
     <Compile Include="Assets\InputManager\InputController.cs" />
     <Compile Include="Assets\Notification\NotificationCenter.cs" />
     <Compile Include="Assets\Notification\TestNotication.cs" />
@@ -161,6 +162,7 @@
     <Compile Include="Assets\StateMachine\CharacterStateMachine.cs" />
     <Compile Include="Assets\StateMachine\MeleeKnightStateMachine.cs" />
     <Compile Include="Assets\StateMachine\StateMachineEnum.cs" />
+    <Compile Include="Assets\StateMachine\TestStateMachine.cs" />
     <Compile Include="Assets\SuperCharacter\CameraFollowing\CameraFollow.cs" />
     <Compile Include="Assets\SuperCharacter\FSM\MStateMachine.cs" />
     <Compile Include="Assets\SuperCharacter\PolyTerrain\PerlinNoise.cs" />
