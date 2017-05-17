@@ -156,9 +156,6 @@
     <Compile Include="Assets\FindPath\FindPath.cs" />
     <Compile Include="Assets\FindPath\NavigationPath.cs" />
     <Compile Include="Assets\InputManager\InputController.cs" />
-    <Compile Include="Assets\Notification\NotificationCenter.cs" />
-    <Compile Include="Assets\Notification\TestNotication.cs" />
-    <Compile Include="Assets\Notification\TestReceiver.cs" />
     <Compile Include="Assets\StateMachine\CharacterStateMachine.cs" />
     <Compile Include="Assets\StateMachine\MeleeKnightStateMachine.cs" />
     <Compile Include="Assets\StateMachine\StateMachineEnum.cs" />
@@ -196,6 +193,7 @@
     <Compile Include="Assets\SuperCharacter\SuperCharacterController\SuperCharacterController\Core\SuperStateMachine.cs" />
     <Compile Include="Assets\SuperCharacter\SuperCharacterController\SuperCharacterController\DebugDraw.cs" />
     <Compile Include="Assets\SuperCharacter\SuperCharacterController\SuperCharacterController\Math3d.cs" />
+    <Compile Include="Assets\TriggerManager\TriggerManagement.cs" />
     <Compile Include="Assets\YuanZhuiCast\SightCone.cs" />
   </ItemGroup>
   <ItemGroup>

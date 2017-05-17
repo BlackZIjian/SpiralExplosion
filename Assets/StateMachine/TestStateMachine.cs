@@ -17,6 +17,7 @@ public class TestState : FSMState
     {
         stateID = StateID.NullStateID;
         tfsm = fsm;
+        TriggerManagement.AddObserver("character", new OnTrigger(test));
     }
     public override void Act()
     {
@@ -24,12 +25,17 @@ public class TestState : FSMState
         {
             if(c.tag == "Weapon")
             {
-                Debug.Log("被击中");
+                TriggerManagement.Triggering(new WeaponSuperControllerEventArgs(c.gameObject.transform,c,null), "character");
             }
         }
     }
     public override void Reason()
     {
 
+    }
+    public void test(TriggerEventArgs args)
+    {
+        WeaponSuperControllerEventArgs arg = (WeaponSuperControllerEventArgs)args;
+        Debug.Log(arg.weapon.position);
     }
 }
