@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System;
+using Chronos;
 
 public class CharacterStateMachine : FSMSystem {
 
@@ -12,6 +13,15 @@ public class CharacterStateMachine : FSMSystem {
     public float plucking = 0;
     public float pluckSpeed = 0;
     public Collider WeaponCollider;
+    public bool isTriggerSome = false;
+    public void OnTriggerSome(TriggerEventArgs args)
+    {
+        WeaponSuperControllerEventArgs wsceargs = args as WeaponSuperControllerEventArgs;
+        if (wsceargs.isEnter)
+            isTriggerSome = true;
+        else
+            isTriggerSome = false;
+    }
     public void Start()
     {
         this.CharacterAni = controller.ani;
@@ -26,6 +36,7 @@ public class CharacterStateMachine : FSMSystem {
         AddState(new CharacterAttack3State(controller, this));
         AddState(new CharacterPluckState(controller, this));
         AddState(new CharacterWaveSwordState(controller, this));
+        TriggerManagement.AddObserver("character", new OnTrigger(OnTriggerSome));
     }
 
     public void OnAttackFinished()
@@ -279,6 +290,8 @@ public class CharacterAttack1State : FSMState
 {
     public SuperCharacterController controller;
     public CharacterStateMachine cfsm;
+    bool isAttackSuccess = false;
+    float shakeTime =0;
     public CharacterAttack1State(SuperCharacterController c, FSMSystem f)
     {
         stateID = StateID.CharacterAttack1;
@@ -303,21 +316,40 @@ public class CharacterAttack1State : FSMState
         {
             controller.MoveHorizontal(controller.GetHorizontal(), cfsm.attackSpeed, 5);
         }
+        if(!isAttackSuccess && cfsm.isTriggerSome)
+        {
+            isAttackSuccess = true;
+            //武器耐久减少之类的
+        }
+        if(cfsm.isTriggerSome)
+        {
+            shakeTime -= Timekeeper.instance.Clock("Controller").deltaTime;
+            if(shakeTime <= 0)
+            {
+                shakeTime = 1f;
+                TimeControlle.instance.PauseTime("Root", 0.3f);
+            }
+        }
     }
     public override void DoBeforeEntering()
     {
         cfsm.isContinueAttack = false;
         cfsm.CharacterAni.SetBool("startAttack", true);
+        isAttackSuccess = false;
+        shakeTime = 0;
     }
     public override void DoBeforeLeaving()
     {
     }
+    
 }
 
 public class CharacterAttack2State : FSMState
 {
     public SuperCharacterController controller;
     public CharacterStateMachine cfsm;
+    bool isAttackSuccess = false;
+    float shakeTime = 0;
     public CharacterAttack2State(SuperCharacterController c, FSMSystem f)
     {
         stateID = StateID.CharacterAttack2;
@@ -341,10 +373,26 @@ public class CharacterAttack2State : FSMState
         {
             controller.MoveHorizontal(controller.GetHorizontal(), cfsm.attackSpeed, 5);
         }
+        if (!isAttackSuccess && cfsm.isTriggerSome)
+        {
+            isAttackSuccess = true;
+            //武器耐久减少之类的
+        }
+        if (cfsm.isTriggerSome)
+        {
+            shakeTime -= Timekeeper.instance.Clock("Controller").deltaTime;
+            if (shakeTime <= 0)
+            {
+                shakeTime = 1f;
+                TimeControlle.instance.PauseTime("Root", 0.3f);
+            }
+        }
     }
     public override void DoBeforeEntering()
     {
         cfsm.isContinueAttack = false;
+        isAttackSuccess = false;
+        shakeTime = 0;
     }
     public override void DoBeforeLeaving()
     {
@@ -355,6 +403,8 @@ public class CharacterAttack3State : FSMState
 {
     public SuperCharacterController controller;
     public CharacterStateMachine cfsm;
+    bool isAttackSuccess = false;
+    float shakeTime = 0;
     public CharacterAttack3State(SuperCharacterController c, FSMSystem f)
     {
         stateID = StateID.CharacterAttack3;
@@ -378,10 +428,26 @@ public class CharacterAttack3State : FSMState
         {
             controller.MoveHorizontal(controller.GetHorizontal(), cfsm.attackSpeed, 5);
         }
+        if (!isAttackSuccess && cfsm.isTriggerSome)
+        {
+            isAttackSuccess = true;
+            //武器耐久减少之类的
+        }
+        if (cfsm.isTriggerSome)
+        {
+            shakeTime -= Timekeeper.instance.Clock("Controller").deltaTime;
+            if (shakeTime <= 0)
+            {
+                shakeTime = 1f;
+                TimeControlle.instance.PauseTime("Root", 0.3f);
+            }
+        }
     }
     public override void DoBeforeEntering()
     {
         cfsm.isContinueAttack = false;
+        isAttackSuccess = false;
+        shakeTime = 0; 
     }
     public override void DoBeforeLeaving()
     {

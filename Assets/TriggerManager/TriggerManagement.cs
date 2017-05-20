@@ -10,13 +10,11 @@ public class TriggerEventArgs : EventArgs
 public class WeaponSuperControllerEventArgs : TriggerEventArgs
 {
     public Transform weapon;
-    public Collider weaponCollider;
-    public CollisionSphere characterSphere;
-    public WeaponSuperControllerEventArgs(Transform weapon, Collider weaponCollider, CollisionSphere characterSphere)
+    public bool isEnter;
+    public WeaponSuperControllerEventArgs(Transform weapon,bool isEnter)
     {
         this.weapon = weapon;
-        this.weaponCollider = weaponCollider;
-        this.characterSphere = characterSphere;
+        this.isEnter = isEnter;
     }
 }
 public delegate void OnTrigger(TriggerEventArgs args);
