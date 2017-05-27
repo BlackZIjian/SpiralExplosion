@@ -82,7 +82,6 @@ public class CharacterIdleState : FSMState
     }
     public override void Reason()
     {
-        
         if(InputController.GetKey<Vector2>("inputV").magnitude > 0.1f)
         {
             fsm.PerformTransition(Transition.CharacterIdleToWalk);
