@@ -69,6 +69,7 @@ public class CharacterStateMachine : FSMSystem {
 public class CharacterIdleState : FSMState
 {
     public SuperCharacterController controller;
+    private float relayTime = 0.5f;
     public CharacterIdleState(SuperCharacterController c,FSMSystem f)
     {
         fsm = f;
@@ -82,27 +83,27 @@ public class CharacterIdleState : FSMState
     }
     public override void Reason()
     {
+            if (InputController.GetKey<Vector2>("inputV").magnitude > 0.1f)
+            {
+                fsm.PerformTransition(Transition.CharacterIdleToWalk);
+            }
+            if (InputController.GetKey<bool>("Jump"))
+            {
+                fsm.PerformTransition(Transition.CharacterJump);
+            }
+            if (InputController.GetKey<bool>("Attack"))
+            {
+                fsm.PerformTransition(Transition.ToNextAttack);
+            }
+            if (InputController.GetKey<bool>("PluckAttack"))
+            {
+                fsm.PerformTransition(Transition.ToPlucking);
+            }
+            if (!controller.MaintainingGround())
+            {
+                fsm.PerformTransition(Transition.CharacterFall);
+            }
         
-        if(InputController.GetKey<Vector2>("inputV").magnitude > 0.1f)
-        {
-            fsm.PerformTransition(Transition.CharacterIdleToWalk);
-        }
-        if(InputController.GetKey<bool>("Jump"))
-        {
-            fsm.PerformTransition(Transition.CharacterJump);
-        }
-        if(InputController.GetKey<bool>("Attack"))
-        {
-            fsm.PerformTransition(Transition.ToNextAttack);
-        }
-        if(InputController.GetKey<bool>("PluckAttack"))
-        {
-            fsm.PerformTransition(Transition.ToPlucking);
-        }
-        if (!controller.MaintainingGround())
-        {
-            fsm.PerformTransition(Transition.CharacterFall);
-        }
 
     }
 
@@ -128,7 +129,7 @@ public class CharacterIdleState : FSMState
     {
         CharacterStateMachine cfsm = (CharacterStateMachine)fsm;
         Animator ani = cfsm.CharacterAni;
-        ani.SetBool("isAttackFinished", false);
+        
     }
 }
 
@@ -303,7 +304,7 @@ public class CharacterAttack1State : FSMState
     }
     public override void Reason()
     {
-        if(InputController.GetKey<bool>("Attack"))
+        if(InputController.GetKey<bool>("Attack") || InputController.GetKey<bool>("PluckAttack"))
         {
             cfsm.isContinueAttack = true;
         }
@@ -333,8 +334,10 @@ public class CharacterAttack1State : FSMState
     }
     public override void DoBeforeEntering()
     {
+
         cfsm.isContinueAttack = false;
         cfsm.CharacterAni.SetBool("startAttack", true);
+        cfsm.CharacterAni.SetBool("isAttackFinished", false);
         isAttackSuccess = false;
         shakeTime = 0;
     }
@@ -361,7 +364,7 @@ public class CharacterAttack2State : FSMState
     }
     public override void Reason()
     {
-        if (InputController.GetKey<bool>("Attack"))
+        if (InputController.GetKey<bool>("Attack") || InputController.GetKey<bool>("PluckAttack"))
         {
             cfsm.isContinueAttack = true;
         }
@@ -416,7 +419,7 @@ public class CharacterAttack3State : FSMState
     }
     public override void Reason()
     {
-        if (InputController.GetKey<bool>("Attack"))
+        if (InputController.GetKey<bool>("Attack") || InputController.GetKey<bool>("PluckAttack"))
         {
             cfsm.isContinueAttack = true;
         }
