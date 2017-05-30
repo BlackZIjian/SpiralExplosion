@@ -83,6 +83,7 @@ public class CharacterIdleState : FSMState
     }
     public override void Reason()
     {
+<<<<<<< HEAD
             if (InputController.GetKey<Vector2>("inputV").magnitude > 0.1f)
             {
                 fsm.PerformTransition(Transition.CharacterIdleToWalk);
@@ -104,6 +105,28 @@ public class CharacterIdleState : FSMState
                 fsm.PerformTransition(Transition.CharacterFall);
             }
         
+=======
+        if(InputController.GetKey<Vector2>("inputV").magnitude > 0.1f)
+        {
+            fsm.PerformTransition(Transition.CharacterIdleToWalk);
+        }
+        if(InputController.GetKey<bool>("Jump"))
+        {
+            fsm.PerformTransition(Transition.CharacterJump);
+        }
+        if(InputController.GetKey<bool>("Attack"))
+        {
+            fsm.PerformTransition(Transition.ToNextAttack);
+        }
+        if(InputController.GetKey<bool>("PluckAttack"))
+        {
+            fsm.PerformTransition(Transition.ToPlucking);
+        }
+        if (!controller.MaintainingGround())
+        {
+            fsm.PerformTransition(Transition.CharacterFall);
+        }
+>>>>>>> SpiralExplosion/master
 
     }
 

@@ -1095,6 +1095,11 @@
         <para>Flag that tells if the connection has been marked as "ready" by a client calling ClientScene.Ready().</para>
       </summary>
     </member>
+    <member name="P:UnityEngine.Networking.NetworkConnection.lastError">
+      <summary>
+        <para>The last error associated with this connection.</para>
+      </summary>
+    </member>
     <member name="F:UnityEngine.Networking.NetworkConnection.lastMessageTime">
       <summary>
         <para>The last time that a message was received on this connection.</para>
@@ -2181,6 +2186,7 @@
       <param name="extendedInfo">A text description for the error if success is false.</param>
     </member>
     <member name="M:UnityEngine.Networking.NetworkManager.OnDropConnection(System.Boolean,System.String)">
+<<<<<<< HEAD
       <summary>
         <para>Callback that happens when a NetworkMatch.DropConnection match request has been processed on the server.</para>
       </summary>
@@ -2209,6 +2215,36 @@
       </summary>
       <param name="success">Indicates if the request succeeded.</param>
       <param name="extendedInfo">A text description for the error if success is false.</param>
+=======
+      <summary>
+        <para>Callback that happens when a NetworkMatch.DropConnection match request has been processed on the server.</para>
+      </summary>
+      <param name="success">Indicates if the request succeeded.</param>
+      <param name="extendedInfo">A text description for the error if success is false.</param>
+    </member>
+    <member name="M:UnityEngine.Networking.NetworkManager.OnMatchCreate(System.Boolean,System.String,UnityEngine.Networking.Match.MatchInfo)">
+      <summary>
+        <para>Callback that happens when a NetworkMatch.CreateMatch request has been processed on the server.</para>
+      </summary>
+      <param name="success">Indicates if the request succeeded.</param>
+      <param name="extendedInfo">A text description for the error if success is false.</param>
+      <param name="matchInfo">The information about the newly created match.</param>
+    </member>
+    <member name="M:UnityEngine.Networking.NetworkManager.OnMatchJoined(System.Boolean,System.String,UnityEngine.Networking.Match.MatchInfo)">
+      <summary>
+        <para>Callback that happens when a NetworkMatch.JoinMatch request has been processed on the server.</para>
+      </summary>
+      <param name="success">Indicates if the request succeeded.</param>
+      <param name="extendedInfo">A text description for the error if success is false.</param>
+      <param name="matchInfo">The info for the newly joined match.</param>
+    </member>
+    <member name="M:UnityEngine.Networking.NetworkManager.OnMatchList(System.Boolean,System.String,System.Collections.Generic.List`1&lt;UnityEngine.Networking.Match.MatchInfoSnapshot&gt;)">
+      <summary>
+        <para>Callback that happens when a NetworkMatch.ListMatches request has been processed on the server.</para>
+      </summary>
+      <param name="success">Indicates if the request succeeded.</param>
+      <param name="extendedInfo">A text description for the error if success is false.</param>
+>>>>>>> SpiralExplosion/master
       <param name="matchList">A list of matches corresponding to the filters set in the initial list request.</param>
     </member>
     <member name="M:UnityEngine.Networking.NetworkManager.OnServerAddPlayer(UnityEngine.Networking.NetworkConnection,System.Int16)">
@@ -4599,6 +4635,7 @@ All of the player objects in the game are disabled when the host is lost. Then, 
     <member name="M:UnityEngine.Networking.NetworkWriter.Write(UnityEngine.GameObject)">
       <summary>
         <para>This writes a reference to an object, value, buffer or network message, together with a NetworkIdentity component to the stream.</para>
+<<<<<<< HEAD
       </summary>
       <param name="value">The object to write.</param>
       <param name="buffer">The byte buffer to write.</param>
@@ -4669,6 +4706,8 @@ All of the player objects in the game are disabled when the host is lost. Then, 
     <member name="M:UnityEngine.Networking.NetworkWriter.Write(UnityEngine.Networking.NetworkHash128)">
       <summary>
         <para>This writes a reference to an object, value, buffer or network message, together with a NetworkIdentity component to the stream.</para>
+=======
+>>>>>>> SpiralExplosion/master
       </summary>
       <param name="value">The object to write.</param>
       <param name="buffer">The byte buffer to write.</param>
@@ -4676,6 +4715,79 @@ All of the player objects in the game are disabled when the host is lost. Then, 
       <param name="offset">The byte buffer array element to start writing from.</param>
       <param name="msg">The network message to write.</param>
     </member>
+<<<<<<< HEAD
+=======
+    <member name="M:UnityEngine.Networking.NetworkWriter.Write(UnityEngine.Quaternion)">
+      <summary>
+        <para>This writes a reference to an object, value, buffer or network message, together with a NetworkIdentity component to the stream.</para>
+      </summary>
+      <param name="value">The object to write.</param>
+      <param name="buffer">The byte buffer to write.</param>
+      <param name="count">The number of bytes in the byte buffer to write.</param>
+      <param name="offset">The byte buffer array element to start writing from.</param>
+      <param name="msg">The network message to write.</param>
+    </member>
+    <member name="M:UnityEngine.Networking.NetworkWriter.Write(UnityEngine.Rect)">
+      <summary>
+        <para>This writes a reference to an object, value, buffer or network message, together with a NetworkIdentity component to the stream.</para>
+      </summary>
+      <param name="value">The object to write.</param>
+      <param name="buffer">The byte buffer to write.</param>
+      <param name="count">The number of bytes in the byte buffer to write.</param>
+      <param name="offset">The byte buffer array element to start writing from.</param>
+      <param name="msg">The network message to write.</param>
+    </member>
+    <member name="M:UnityEngine.Networking.NetworkWriter.Write(UnityEngine.Plane)">
+      <summary>
+        <para>This writes a reference to an object, value, buffer or network message, together with a NetworkIdentity component to the stream.</para>
+      </summary>
+      <param name="value">The object to write.</param>
+      <param name="buffer">The byte buffer to write.</param>
+      <param name="count">The number of bytes in the byte buffer to write.</param>
+      <param name="offset">The byte buffer array element to start writing from.</param>
+      <param name="msg">The network message to write.</param>
+    </member>
+    <member name="M:UnityEngine.Networking.NetworkWriter.Write(UnityEngine.Ray)">
+      <summary>
+        <para>This writes a reference to an object, value, buffer or network message, together with a NetworkIdentity component to the stream.</para>
+      </summary>
+      <param name="value">The object to write.</param>
+      <param name="buffer">The byte buffer to write.</param>
+      <param name="count">The number of bytes in the byte buffer to write.</param>
+      <param name="offset">The byte buffer array element to start writing from.</param>
+      <param name="msg">The network message to write.</param>
+    </member>
+    <member name="M:UnityEngine.Networking.NetworkWriter.Write(UnityEngine.Matrix4x4)">
+      <summary>
+        <para>This writes a reference to an object, value, buffer or network message, together with a NetworkIdentity component to the stream.</para>
+      </summary>
+      <param name="value">The object to write.</param>
+      <param name="buffer">The byte buffer to write.</param>
+      <param name="count">The number of bytes in the byte buffer to write.</param>
+      <param name="offset">The byte buffer array element to start writing from.</param>
+      <param name="msg">The network message to write.</param>
+    </member>
+    <member name="M:UnityEngine.Networking.NetworkWriter.Write(UnityEngine.Networking.MessageBase)">
+      <summary>
+        <para>This writes a reference to an object, value, buffer or network message, together with a NetworkIdentity component to the stream.</para>
+      </summary>
+      <param name="value">The object to write.</param>
+      <param name="buffer">The byte buffer to write.</param>
+      <param name="count">The number of bytes in the byte buffer to write.</param>
+      <param name="offset">The byte buffer array element to start writing from.</param>
+      <param name="msg">The network message to write.</param>
+    </member>
+    <member name="M:UnityEngine.Networking.NetworkWriter.Write(UnityEngine.Networking.NetworkHash128)">
+      <summary>
+        <para>This writes a reference to an object, value, buffer or network message, together with a NetworkIdentity component to the stream.</para>
+      </summary>
+      <param name="value">The object to write.</param>
+      <param name="buffer">The byte buffer to write.</param>
+      <param name="count">The number of bytes in the byte buffer to write.</param>
+      <param name="offset">The byte buffer array element to start writing from.</param>
+      <param name="msg">The network message to write.</param>
+    </member>
+>>>>>>> SpiralExplosion/master
     <member name="M:UnityEngine.Networking.NetworkWriter.Write(UnityEngine.Networking.NetworkIdentity)">
       <summary>
         <para>This writes a reference to an object, value, buffer or network message, together with a NetworkIdentity component to the stream.</para>
@@ -5049,7 +5161,11 @@ All of the player objects in the game are disabled when the host is lost. Then, 
     </member>
     <member name="T:UnityEngine.Networking.SyncVarAttribute">
       <summary>
+<<<<<<< HEAD
         <para>[SyncVar] is an attribute that can be put on member variables of UNeBehaviour classes. These variables will have their values sychronized from the server to clients in the game that are in the ready state.</para>
+=======
+        <para>[SyncVar] is an attribute that can be put on member variables of NetworkBehaviour classes. These variables will have their values sychronized from the server to clients in the game that are in the ready state.</para>
+>>>>>>> SpiralExplosion/master
       </summary>
     </member>
     <member name="F:UnityEngine.Networking.SyncVarAttribute.hook">
